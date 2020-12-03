@@ -6,7 +6,7 @@
 /*   By: adupuy <adupuy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 11:03:35 by adupuy            #+#    #+#             */
-/*   Updated: 2020/11/20 10:41:26 by adupuy           ###   ########.fr       */
+/*   Updated: 2020/12/02 17:03:09 by adupuy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static int	ft_sep(char s, char c)
 
 static int	ft_count_word(char const *s, char c)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	i = 0;
 	count = 0;
@@ -36,7 +36,7 @@ static int	ft_count_word(char const *s, char c)
 	return (count);
 }
 
-static char	*ft_new_str(char const *s, char c)
+static char	*ft_new_str(char *s, char c)
 {
 	int		i;
 	char	*str;
@@ -56,23 +56,40 @@ static char	*ft_new_str(char const *s, char c)
 	return (str);
 }
 
+static void	*ft_free(char **split, int j)
+{
+	while (j >= 0)
+	{
+		free(split[j]);
+		j--;
+	}
+	free(split);
+	return (NULL);
+}
+
 char		**ft_split(char const *s, char c)
 {
 	char	**split;
 	int		i;
 	int		j;
 
-	if (!s || !c)
+	if (!s)
 		return (NULL);
 	if (!(split = malloc(sizeof(char *) * (ft_count_word(s, c) + 1))))
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (s[i] != '\0')
+	while (j < ft_count_word(s, c))
 	{
 		if (!ft_sep(s[i], c))
+		{
 			if (i == 0 || (ft_sep(s[i - 1], c)))
-				split[j++] = ft_new_str(&s[i], c);
+			{
+				if (!(split[j] = ft_new_str((char *)&s[i], c)))
+					return (split = ft_free(split, j));
+				j++;
+			}
+		}
 		i++;
 	}
 	split[j] = NULL;

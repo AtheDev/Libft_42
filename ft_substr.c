@@ -6,7 +6,7 @@
 /*   By: adupuy <adupuy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 11:16:27 by adupuy            #+#    #+#             */
-/*   Updated: 2020/11/19 13:49:13 by adupuy           ###   ########.fr       */
+/*   Updated: 2020/12/02 13:25:19 by adupuy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,13 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		str[0] = '\0';
 		return (str);
 	}
+	if (len > (size - start))
+		len = size - start;
 	if (!(str = malloc(sizeof(char) * (len + 1))))
 		return (NULL);
-	i = 0;
-	while (i < len)
-	{
+	i = -1;
+	while (++i < len)
 		str[i] = s[start + i];
-		i++;
-	}
 	str[i] = '\0';
 	return (str);
 }

@@ -31,21 +31,26 @@ char		*ft_strtrim(char const *s1, char const *set)
 	char	*str;
 	int		i;
 	int		j;
-	int		len;
 
-	if (!s1 || !set)
+	if (!s1)
 		return (NULL);
 	i = 0;
-	while (ft_sep(s1[i], set) && s1[i] != '\0')
-		i++;
-	len = ft_strlen(s1);
-	while (ft_sep(s1[len - 1], set) && len > i)
-		len--;
-	if (!(str = malloc(sizeof(char) * (len - i + 1))))
-		return (NULL);
 	j = 0;
-	while (i < len)
-		str[j++] = s1[i++];
-	str[j] = '\0';
+	while (ft_sep(*s1, set) && *s1 != '\0')
+		s1++;
+	while (s1[i] != '\0')
+	{
+		if (ft_sep(s1[i], set))
+			j++;
+		else
+			j = 0;
+		i++;
+	}
+	i = i - j;
+	if (!(str = malloc(sizeof(char) * (i + 1))))
+		return (NULL);
+	str[i] = '\0';
+	while (--i >= 0)
+		str[i] = s1[i];
 	return (str);
 }
